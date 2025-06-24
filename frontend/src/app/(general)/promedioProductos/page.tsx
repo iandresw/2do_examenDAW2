@@ -1,33 +1,47 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import React, { useEffect, useState } from 'react'
 import { promedioProductos } from '../services/api'
-import { error } from 'console'
-
+import { Bar } from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 export default function page() {
+
   const [charData, setCharData ] = useState({
  
-    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+    labels: [],
     datasets: [
       {
         label: 'Dataset',
-        data: Utils.numbers({count: 6, min: -100, max: 100}),
+        data: [],
         borderColor: '',
         backgroundColor: '',
-        pointStyle: 'circle',
-        pointRadius: 10,
-        pointHoverRadius: 15
       }
     ]
 
   })
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+   
   useEffect(()=>{
     promedioProductos().then(data=>{
-      const datalabels = data.map(items)
+      const dataLabes = data.map((item:any)=>item.brand)
+      const catidad = data.map((item: any) => parseInt(item.cantidad_marca))
+      setCharData(
+        {
+          labels: dataLabes,
+          datasets: [
+            {
+              label: 'Promedio Productos',
+              data: catidad,
+              backgroundColor: "",
+              borderColor: ''
+            }
+          ]
+        }
+      )
     }).catch((erro)=>console.error("ocurrio un error" + erro))
   },[])
   return (
-    <div>page</div>
+    <div><Bar data={charData}>
+      </Bar></div>
   )
 }
