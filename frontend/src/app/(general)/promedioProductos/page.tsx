@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { promedioProductos } from '../services/api'
 import { Bar } from 'react-chartjs-2'
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, fill } from 'chart.js';
 export default function page() {
 
   const [charData, setCharData ] = useState({
@@ -20,7 +20,6 @@ export default function page() {
 
   })
 
-   
   useEffect(()=>{
     promedioProductos().then(data=>{
       const dataLabes = data.map((item:any)=>item.brand)
@@ -32,8 +31,9 @@ export default function page() {
             {
               label: 'Promedio Productos',
               data: catidad,
-              backgroundColor: "",
-              borderColor: ''
+              fill: false,
+              borderColor: '',
+              tension: 0.1
             }
           ]
         }
